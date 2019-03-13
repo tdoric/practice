@@ -1,10 +1,16 @@
 DROP TABLE IF EXISTS route;
+DROP TABLE IF EXISTS log;
 create table route
 (
+   step integer auto_increment,
    id integer not null,
    x integer not null,
-   y integer not null,
-   primary key(id)
+   y integer not null
+);
+create table log
+(
+   id integer auto_increment,
+   location varchar(50) not null,
 );
 insert into route (id,x,y) 
 values	(1,5,5),

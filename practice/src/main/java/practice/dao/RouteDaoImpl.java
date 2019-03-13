@@ -18,7 +18,19 @@ public class RouteDaoImpl implements RouteDao {
 	@Override
 	public List<Location> getRoute() {
 		
-		return jdbcTemplate.query(Statements.Route.SELECT_ROUTE,new Object[] {1} ,
+		return jdbcTemplate.query(Statements.Route.SELECT_ROUTE ,new Object[] {1},
+				new BeanPropertyRowMapper<Location>(Location.class));
+	}
+
+	@Override
+	public void insertLogLocation(Location location) {
+		jdbcTemplate.update(Statements.Log.INSERT, new Object[] {location.toString()});
+		
+	}
+
+	@Override
+	public Location getLocation(int idLocation) {
+		return jdbcTemplate.queryForObject(Statements.Route.SELECT_LOCATION,new Object[] {idLocation} ,
 				new BeanPropertyRowMapper<Location>(Location.class));
 	}
 
