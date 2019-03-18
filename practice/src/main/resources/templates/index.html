@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello WebSocket</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!--     <link href="/main.css" rel="stylesheet"> -->
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="connect">Location generator:</label>
+                    <button id="connect" class="btn btn-default" type="submit">Generate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+    	<div class="col-md-6">
+            <table id="locationsLeft" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Step</th>
+                    <th>X coordinate</th>
+                    <th>Y coordinate</th>
+                </tr>
+                </thead>
+                <tbody id="locationsBase">
+                <tr th:each="location : ${route}">
+                    <td th:text="${location.step}"></td>
+                    <td th:text="${location.x}"></td>
+                    <td th:text="${location.y}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table id="locationsRight" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Step</th>
+                    <th>X coordinate</th>
+                    <th>Y coordinate</th>
+                </tr>
+                </thead>
+                <tbody id="locations">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

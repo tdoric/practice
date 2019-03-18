@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import practice.event.LocationEvent;
@@ -16,7 +17,8 @@ public class VehicleGeneratoImpl implements VehicleGenerator {
 	
 	@Autowired
 	LocationConsumer locationConsumer;
-	
+	@Autowired
+	SimpMessagingTemplate template;
 	@Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 	
@@ -32,10 +34,11 @@ public class VehicleGeneratoImpl implements VehicleGenerator {
 			Location newLocation = new Location(rand.nextInt(X_CORDINATE_MAX), rand.nextInt(Y_CORDINATE_MAX),i);
 			LocationEvent locationEvent = new LocationEvent(this, newLocation);
 			applicationEventPublisher.publishEvent(locationEvent);
+			template.convertAndSend("/topic/greetings",locationEvent);
 			try {
 				Thread.sleep(VALUE_MILISECOND);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
