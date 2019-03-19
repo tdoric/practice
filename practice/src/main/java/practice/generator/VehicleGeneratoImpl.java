@@ -5,6 +5,7 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import practice.event.LocationEvent;
@@ -24,9 +25,10 @@ public class VehicleGeneratoImpl implements VehicleGenerator {
 	
 	public static final int X_CORDINATE_MAX = 11;
 	public static final int Y_CORDINATE_MAX = 11; 
-	public static final int VALUE_MILISECOND = 10000;
+	public static final int VALUE_MILISECOND = 1000;
 
 	@Override
+	@Async
 	public void generateLocation() {
 		
 		for(int i=1;i<15;i++) {
@@ -34,7 +36,7 @@ public class VehicleGeneratoImpl implements VehicleGenerator {
 			Location newLocation = new Location(rand.nextInt(X_CORDINATE_MAX), rand.nextInt(Y_CORDINATE_MAX),i);
 			LocationEvent locationEvent = new LocationEvent(this, newLocation);
 			applicationEventPublisher.publishEvent(locationEvent);
-			template.convertAndSend("/topic/greetings",locationEvent);
+			template.convertAndSend("/topic/locations",locationEvent);
 			try {
 				Thread.sleep(VALUE_MILISECOND);
 			} catch (InterruptedException e) {

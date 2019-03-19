@@ -1,8 +1,6 @@
 var stompClient = null;
 
 function setConnected(connected) {
-//    $("#connect").prop("disabled", connected);
-//    $("#disconnect").prop("disabled", !connected);
     if (connected) {
     	 $("#locationsLeft").show();
     	 $("#locationsRight").show();
@@ -14,14 +12,26 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
+    var socket = new SockJS('/websockets');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (object) {
+        stompClient.subscribe('/topic/locations', function (object) {
         	var obj = JSON.parse(object.body);
             showLocation(obj.location);
+        });
+    });
+}
+function connectForStatus() {
+    var socket = new SockJS('/websockets');
+    stompClientStatus = Stomp.over(socket);
+    stompClientStatus.connect({}, function (frame) {
+        setConnected(true);
+        console.log('Connected: ' + frame);
+        stompClientStatus.subscribe('/topic/status', function (object) {
+        	var obj = JSON.parse(object.body);
+        	showStatus(obj);
         });
     });
 }
@@ -30,6 +40,9 @@ function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect();
     }
+    if (stompClientStatus !== null) {
+    	stompClientStatus.disconnect();
+    }
     setConnected(false);
     console.log("Disconnected");
 }
@@ -37,13 +50,24 @@ function disconnect() {
 function showLocation(location) {
     $("#locations").append("<tr><td>" + location.step + "</td><td>" + location.x + "</td><td>" + location.y + "</td></tr>");
 }
+function showStatus(msg) {
+	 $('div.alert').removeClass( "alert-success  alert-danger" )
+	
+	if(msg.onRoute){
+		 $('div.alert').addClass("alert-success");
+	}else{
+		 $('div.alert').addClass("alert-danger");
+		
+	}
+	 $('div.alert').html('Status for step '+msg.step + ' is ' + msg.status);
+}
 
 function start() {
 	 $.ajax({
-		   type:'GET',
+		   type:'POST',
 		   url :"generate",
-		   success: function(data) {
-		        console.log('success',data);
+		   success: function() {
+		        console.log('success');
 		   },
 		   error:function(exception){alert('Exeption:'+exception);}
 		}); 
@@ -56,6 +80,7 @@ $(function () {
         e.preventDefault();
     });
     connect();
-    $( "#connect" ).click(function() { start(); });
+    connectForStatus();
+    $( "#generate" ).click(function() { start(); });
     $( "#disconnect" ).click(function() { disconnect(); });
 });

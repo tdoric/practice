@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Hello WebSocket</title>
+    <title>Location generator</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<!--     <link href="/main.css" rel="stylesheet"> -->
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
@@ -11,14 +10,24 @@
 </head>
 <body>
 <div id="main-content" class="container">
+	<br>
     <div class="row">
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="connect">Location generator:</label>
-                    <button id="connect" class="btn btn-default" type="submit">Generate</button>
+                    <label for="generate">Location generator:</label>
+                    <button id="generate" class="btn btn-default">Generate</button>
                 </div>
             </form>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+           
+                
+                  <div class="alert" role="alert">Status</div>
+            
         </div>
     </div>
     <div class="row">

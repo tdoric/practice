@@ -1,18 +1,16 @@
 package practice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import practice.dao.RouteDao;
 import practice.generator.VehicleGenerator;
-import practice.model.Location;
 
 @Controller
-public class TestController  {
+public class LocationController  {
 	
 	@Autowired
 	RouteDao routeDao;
@@ -21,7 +19,7 @@ public class TestController  {
 	
 	
 	
-	@GetMapping("/generate")
+	@PostMapping("/generate")
 	public void start(){
 		vehicleGenerator.generateLocation();
 	
@@ -33,11 +31,12 @@ public class TestController  {
 		return "index";
 	}
 	
-	@MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Location greeting(Location location) throws Exception {
-        return location;
-    }
+	
+//	@MessageMapping("/hello")
+//    @SendTo("/topic/locations")
+//    public Location greeting(Location location) throws Exception {
+//        return location;
+//    }
 	
 	
 
