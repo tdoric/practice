@@ -6,20 +6,15 @@ public class Location {
 	private int x;
 	private int y;
 	
-	
-
-	
 	public Location() {
 		super();
 	}
-
 
 	public Location(int x, int y,int step) {
 		this.x = x;
 		this.y = y;
 		this.step=step;
 	}
-
 
 	public int getX() {
 		return x;

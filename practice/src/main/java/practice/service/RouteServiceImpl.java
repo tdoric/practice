@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import practice.config.AppProperties;
 import practice.dao.RouteDao;
 import practice.event.LocationEvent;
 import practice.model.Location;
@@ -17,6 +18,8 @@ public class RouteServiceImpl implements RouteService,ApplicationListener<Locati
     RouteDao routeDao;
 	@Autowired
 	SimpMessagingTemplate template;
+	@Autowired
+	AppProperties appProperties;
 	
 	@Override
 	public void onApplicationEvent(LocationEvent event) {
@@ -28,9 +31,9 @@ public class RouteServiceImpl implements RouteService,ApplicationListener<Locati
 	public void checkRoute(Location generatedLocation) {
 			Location definiedLocation = routeDao.getLocation(generatedLocation.getStep());
 			if(definiedLocation.equals(generatedLocation)) {
-				template.convertAndSend("/topic/status",new Msg("The vehicle is on route!",generatedLocation.getStep(),true));
+				template.convertAndSend("/topic/status",new Msg(appProperties.getMsg_on_route(),generatedLocation.getStep(),true));
 			}else {
-				template.convertAndSend("/topic/status",new Msg("Wrong way!",generatedLocation.getStep(),false));
+				template.convertAndSend("/topic/status",new Msg(appProperties.getMsg_wrong_way(),generatedLocation.getStep(),false));
 			}
 		}
 
